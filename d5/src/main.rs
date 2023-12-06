@@ -12,7 +12,7 @@ fn parse_seeds(s: &str) -> Result<Vec<i64>> {
         .collect()
 }
 
-fn transform(seeds: &mut Vec<i64>, s: &str) -> Vec<i64> {
+fn transform<'a>(seeds: &'a mut Vec<i64>, s: &str) -> impl Iterator<Item = i64> + 'a {
     let [dst, src, len] = s
         .split_ascii_whitespace()
         .map(|x| x.parse::<i64>().unwrap())
@@ -20,11 +20,9 @@ fn transform(seeds: &mut Vec<i64>, s: &str) -> Vec<i64> {
         .try_into()
         .unwrap();
 
-    let mut transformed: Vec<_> = seeds
-        .extract_if(|&mut x| 0 <= x - src && x - src < len)
-        .collect();
-    transformed.par_iter_mut().for_each(|x| *x += dst - src);
-    transformed
+    seeds
+        .extract_if(move |&mut x| 0 <= x - src && x - src < len)
+        .map(move |x| x + dst - src)
 }
 
 fn main() -> Result<()> {
@@ -33,7 +31,7 @@ fn main() -> Result<()> {
 
     let seeds = parse_seeds(lines.next().ok_or(anyhow!("Invalid input"))?)?;
 
-    // println!("Answer for task 1: {}", task(lines.clone(), seeds.clone()));
+    println!("Answer for task 1: {}", task(lines.clone(), seeds.clone()));
 
     let seeds = seeds
         .as_parallel_slice()
@@ -59,8 +57,7 @@ fn task(lines: std::str::Lines<'_>, mut seeds: Vec<i64>) -> i64 {
             new_seeds = Vec::new();
             continue;
         }
-        let transformed = transform(&mut seeds, l);
-        new_seeds.extend_from_slice(&transformed);
+        new_seeds.extend(transform(&mut seeds, l));
     }
 
     new_seeds.extend_from_slice(&seeds);
