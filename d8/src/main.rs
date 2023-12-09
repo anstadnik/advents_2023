@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 use anyhow::{anyhow, Result};
 use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
-use num::{BigInt, BigUint, Integer};
+use num::{BigUint, Integer};
 use prehash::{DefaultPrehasher, Prehashed, PrehashedMap, Prehasher};
 use std::fs;
 use std::iter::successors;
@@ -48,7 +48,8 @@ fn task_1(path: &str, mapping: &M, start: Prehashed<&str>, is_end: impl Fn(&str)
             false => mapping[state].1,
         })
     })
-    .count() - 1
+    .count()
+        - 1
 }
 
 fn task_2(path: &str, mapping: &M) -> usize {
