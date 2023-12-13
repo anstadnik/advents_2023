@@ -1,5 +1,5 @@
 [package]
-name = "d11"
+name = "d12"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,5 +7,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.75"
+flamegraph = "0.6.4"
+indicatif = { version = "0.17.7", features = ["rayon"] }
 memoize = "0.4.1"
 rayon = "1.8.0"
