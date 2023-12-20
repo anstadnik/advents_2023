@@ -1,0 +1,14 @@
+[package]
+name = "d18"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.75"
+flamegraph = "0.6.4"
+indicatif = { version = "0.17.7", features = ["rayon"] }
+num = "0.4.1"
+rayon = "1.8.0"
+winnow = "0.5.30"
